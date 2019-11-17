@@ -2,25 +2,7 @@ require('dotenv').config();
 const express = require('express'),
     app = express(),
     cors = require('cors'),
-    mongoose = require('mongoose'),
     routes = require('./routes/route');
-
-
-// Connect to MongoDB
-try {
-    mongoose.connect(process.env.MLAB_URI, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true
-    }, () => console.log("MONGODB CONNECTED"));
-
-    // Set Debug mode in DEV env
-    mongoose.set('debug', process.env.NODE_ENV === "DEV");
-} catch (e) {
-    console.error(e.message);
-}
-
-
 
 // Enable CORS
 app.use(cors());
