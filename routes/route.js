@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { addUser, deleteUser } = require('../controllers/user');
+const { addUser, deleteUser, getUsers } = require('../controllers/user');
 
 router.post('/user', async (req, res) => {
     if (req.body.username) {
@@ -24,6 +24,15 @@ router.delete('/user/:id', async (req, res) => {
         }
     } else {
         res.status(400).json('User id cannot be empty');
+    }
+})
+
+router.get('/users', async (req, res) => {
+    try {
+        const users = await getUsers();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(error.status || 500).json(error.message || 'Internal Server Error');
     }
 })
 

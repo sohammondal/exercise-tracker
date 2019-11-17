@@ -34,6 +34,13 @@ describe('User Routes', () => {
         done();
     })
 
+    it('should return a list of users', async (done) => {
+        const res = await request(app).get('/api/exercise/users');
+        expect(res.body).toBeInstanceOf(Array);
+        expect(res.body.length).toBeGreaterThanOrEqual(0);
+        done();
+    });
+
     afterAll((done) => {
         mongoDB.disconnect(done);
     });

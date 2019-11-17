@@ -44,5 +44,18 @@ module.exports = {
                 reject();
             }
         })
+    },
+    getUsers: () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const users = await User.find();
+                if (users) {
+                    resolve(users);
+                }
+            } catch (error) {
+                console.error(error);
+                reject();
+            }
+        })
     }
 }
