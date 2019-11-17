@@ -1,5 +1,7 @@
 # Exercise Tracker REST API
 
+[![Build-Status](https://api.travis-ci.org/sohammondal/exercise-tracker.svg?branch=master)](https://travis-ci.org/sohammondal/exercise-tracker)
+
 #### A microservice project, part of Free Code Camp's curriculum
 
 ### User Stories
