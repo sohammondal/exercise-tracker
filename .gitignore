@@ -1,3 +1,4 @@
 .env
+.eslintrc
 nodemon.json
 node_modules
