@@ -28,7 +28,6 @@ describe('User Routes', () => {
     });
 
     it('should delete a user', async (done) => {
-        console.log(user);
         const res = await request(app).delete('/api/exercise/user/' + user._id);
         expect(res.statusCode).toBe(200);
         done();

@@ -5,7 +5,6 @@ module.exports = {
     addExerciseToUser: (userId, description, duration, date) => {
         return new Promise(async (resolve, reject) => {
             const user = await User.findById(userId);
-            console.log(user);
             if (!user) {
                 return reject({
                     status: 404,
