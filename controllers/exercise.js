@@ -21,5 +21,16 @@ module.exports = {
             return resolve(exercise);
         });
     },
+    getExerciseLogsOfUser: (userId, from, to, limit) => {
+        return new Promise(async (resolve, reject) => {
+            const user = await User.findById(userId);
+            if (!user) {
+                return reject({
+                    status: 404,
+                    message: `User with id ${userId} not found`
+                })
+            }
+        });
+    }
 
 }
