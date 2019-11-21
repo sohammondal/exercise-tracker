@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { check, validationResult } = require('express-validator');
+const { check, validationResult, query } = require('express-validator');
 const { addExerciseToUser } = require('../controllers/exercise');
 
 router.post('/add', [
@@ -31,8 +31,23 @@ router.post('/add', [
 
 })
 
-router.get('/log', (req, res) => {
-
+router.get('/log', [
+    query('userId')
+        .not().isEmpty().withMessage('userId cannot be empty')
+        .isLength({ min: 8, max: 8 }).withMessage('UserId must be equal to 8 chars'),
+    query('from')
+        .optional().isISO8601().toDate().withMessage('From must be in the format YYYY-MM-DD'),
+    query('to')
+        .optional().isISO8601().toDate().withMessage('From must be in the format YYYY-MM-DD'),
+    query('limit')
+        .optional().isISO8601().toDate().withMessage('From must be in the format YYYY-MM-DD')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    const { userId, from, to, limit } = req.query;
+    return res.status(200).json({ userId, from });
 })
 
 module.exports = router;
