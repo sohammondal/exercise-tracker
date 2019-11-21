@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { addUser, deleteUser, getUsers } = require('../controllers/user');
 
-router.post('/user', async (req, res) => {
+router.post('/new-user', async (req, res) => {
     if (req.body.username) {
         try {
             let user = await addUser(req.body.username);
