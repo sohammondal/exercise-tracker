@@ -22,7 +22,7 @@ router.post('/add', [
     const { userId, description, duration, date } = req.body;
     try {
         const resp = await addExerciseToUser(userId, description, duration, date);
-        return res.status(200).json(resp);
+        return res.status(201).json(resp);
 
     } catch (error) {
         return res.status(error.status || 500).json(error.message || 'Internal Server Error');
@@ -40,7 +40,7 @@ router.get('/log', [
     query('to')
         .optional().isISO8601().toDate().withMessage('From must be in the format YYYY-MM-DD'),
     query('limit')
-        .optional().isISO8601().toDate().withMessage('From must be in the format YYYY-MM-DD')
+        .optional().isInt().withMessage('Limit must be a numberic integer')
 ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
