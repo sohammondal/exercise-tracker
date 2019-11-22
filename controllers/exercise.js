@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Exercise = require('../models/exercise');
+const shortid = require('shortid');
 
 module.exports = {
     addExerciseToUser: (userId, description, duration, date) => {
@@ -11,13 +12,12 @@ module.exports = {
                     message: `User with id ${userId} not found`
                 })
             }
-            const locale = 'en-GB';
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
             const exercise = new Exercise({
+                _id: shortid(),
                 userId,
                 description,
                 duration,
-                date: date ? new Date(date).toLocaleDateString(locale, options) : new Date().toLocaleDateString(locale, options)
+                date: date ? date : Date.now()
             });
             await exercise.save();
             return resolve(exercise);
@@ -32,6 +32,15 @@ module.exports = {
                     message: `User with id ${userId} not found`
                 })
             }
+            const exercises = await Exercise.find({
+                userId
+            }).where('date').gt(new Date(from || '1000')).lt(new Date(to || '9999')).limit(limit || 0);
+            return resolve({
+                _id: user._id,
+                username: user.username,
+                count: exercises.length,
+                log: exercises
+            })
         });
     }
 
