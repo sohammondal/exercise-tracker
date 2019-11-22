@@ -12,7 +12,7 @@ describe('User Routes', () => {
 
     it('should create a new user', async () => {
         const res = await request(app)
-            .post('/api/exercise/user')
+            .post('/api/exercise/new-user')
             .send(user);
         expect(res.statusCode).toBe(201);
         expect(res.body).toHaveProperty('_id');
@@ -21,7 +21,7 @@ describe('User Routes', () => {
 
     it('should not create a new user, if username already exists', async () => {
         const res = await request(app)
-            .post('/api/exercise/user')
+            .post('/api/exercise/new-user')
             .send(user);
         expect(res.statusCode).toBe(409);
         expect(res.body).toBe('Username already exists');
