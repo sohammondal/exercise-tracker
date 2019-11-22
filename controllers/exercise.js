@@ -11,11 +11,13 @@ module.exports = {
                     message: `User with id ${userId} not found`
                 })
             }
+            const locale = 'en-GB';
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
             const exercise = new Exercise({
                 userId,
                 description,
                 duration,
-                date: date ? new Date(date).toISOString() : new Date().toISOString()
+                date: date ? new Date(date).toLocaleDateString(locale, options) : new Date().toLocaleDateString(locale, options)
             });
             await exercise.save();
             return resolve(exercise);
