@@ -8,7 +8,7 @@ const exercise1 = {
     date: "2019-09-09"
 }
 const exercise2 = {
-    userId: "M6J6boiv", //Valid User
+    userId: "Gy61ibz3", //Valid User
     description: "hello world 1",
     duration: 30,
     date: "2019-09-10"
@@ -37,6 +37,13 @@ describe('Exercise Routes', () => {
         done();
     })
 
+    it('should return a log of exercises based on userId', async (done) => {
+        const res = await request(app)
+            .get('/api/exercise/log?userId=' + exercise2.userId);
+        expect(res.body).toHaveProperty('count');
+        expect(res.body.log).toBeInstanceOf(Array);
+        done();
+    })
 
     afterAll((done) => {
         mongodb.disconnect(done);
