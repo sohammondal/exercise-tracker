@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { check, param, validationResult } = require('express-validator');
 const { addUser, deleteUser, getUsers } = require('../controllers/user');
 
 
@@ -15,16 +16,20 @@ const { addUser, deleteUser, getUsers } = require('../controllers/user');
 * @apiFaliure (500) {String} Internal Server Error
 */
 
-router.post('/new-user', async (req, res) => {
-    if (req.body.username) {
-        try {
-            let user = await addUser(req.body.username);
-            res.status(201).json(user);
-        } catch (error) {
-            res.status(error.status || 500).json(error.message || 'Internal Server Error');
-        }
-    } else {
-        res.status(400).json('Username cannot be empty');
+router.post('/new-user', [
+    check('username')
+        .not().isEmpty().withMessage('Username cannot be empty')
+        .isString().withMessage('Username must be a string')
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+        let user = await addUser(req.body.username);
+        return res.status(201).json(user);
+    } catch (error) {
+        return res.status(error.status || 500).json(error.message || 'Internal Server Error');
     }
 });
 
@@ -41,17 +46,22 @@ router.post('/new-user', async (req, res) => {
 * @apiFaliure (500) {String} Internal Server Error
 */
 
-router.delete('/user/:id', async (req, res) => {
-    if (req.params.id) {
-        try {
-            await deleteUser(req.params.id);
-            res.sendStatus(200);
-        } catch (error) {
-            res.status(error.status || 500).json(error.message || 'Internal Server Error');
-        }
-    } else {
-        res.status(400).json('User id cannot be empty');
+router.delete('/user/:id', [
+    param('id')
+        .not().isEmpty().withMessage('UserId cannot be empty')
+        .isLength({ min: 8, max: 8 }).withMessage('UserId must be equal to 8 chars')
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+    try {
+        await deleteUser(req.params.id);
+        return res.sendStatus(200);
+    } catch (error) {
+        return res.status(error.status || 500).json(error.message || 'Internal Server Error');
+    }
+
 })
 
 
@@ -70,9 +80,9 @@ router.delete('/user/:id', async (req, res) => {
 router.get('/users', async (req, res) => {
     try {
         const users = await getUsers();
-        res.status(200).json(users);
+        return res.status(200).json(users);
     } catch (error) {
-        res.status(error.status || 500).json(error.message || 'Internal Server Error');
+        return res.status(error.status || 500).json(error.message || 'Internal Server Error');
     }
 })
 
