@@ -2,3 +2,4 @@
 .eslintrc
 nodemon.json
 node_modules
+coverage
